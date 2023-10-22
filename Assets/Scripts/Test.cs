@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shooter : MonoBehaviour
+public class Test : MonoBehaviour
 {
     [SerializeField] GameObject bullet;
     [SerializeField] List<GameObject> projectilePool = new List<GameObject>();
@@ -17,7 +17,7 @@ public class Shooter : MonoBehaviour
     {
         for (int i = 0; i < poolSize; i++)
         {
-            GameObject bulletProjectile = Instantiate(bullet,transform.position, Quaternion.identity, trashLocation);
+            GameObject bulletProjectile = Instantiate(bullet, transform.position, Quaternion.identity, trashLocation);
             projectilePool.Add(bulletProjectile);
             bulletProjectile.SetActive(false);
         }
@@ -30,7 +30,7 @@ public class Shooter : MonoBehaviour
 
     void Fire()
     {
-        if(Input.GetKey(KeyCode.Space)) 
+        if (Input.GetMouseButtonDown(0))
         {
             GameObject bullet = GetPoolProjectile();
             bullet.transform.position = bulletSpawn.position;
@@ -42,7 +42,7 @@ public class Shooter : MonoBehaviour
     GameObject GetPoolProjectile()
     {
 
-        for(int i = 0; i < projectilePool.Count; i++)
+        for (int i = 0; i < projectilePool.Count; i++)
         {
             if (!projectilePool[i].activeInHierarchy)
             {

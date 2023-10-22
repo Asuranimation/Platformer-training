@@ -6,7 +6,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float jumpingPower = 16f;
     [SerializeField] bool isFacingRight = true;
 
-    private bool doubleJump;
+    [SerializeField] int doubleJump;
+    [SerializeField] bool isDoubleJump;
 
      private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
@@ -44,21 +45,18 @@ public class PlayerController : MonoBehaviour
     }
     void Jump()
     {
-        if (IsGrounded() && !Input.GetButton("Jump"))
+        
+        if (Input.GetButtonDown("Jump") && isDoubleJump)
         {
-            doubleJump = false;
-        }
-
-        if (Input.GetButtonDown("Jump"))
-        {
-            if (IsGrounded() || doubleJump)
+            if (IsGrounded() || doubleJump < 2)
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpingPower);
 
-                doubleJump = !doubleJump;
+                doubleJump ++;
 
                 Debug.Log(doubleJump);
             }
+            
         }
 
         if (Input.GetButtonUp("Jump") && rb.velocity.y > 0f)
@@ -77,4 +75,17 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireSphere(groundCheck.position, radiusGroundCheck);
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            doubleJump = 0;
+            isDoubleJump = true;
+
+        }
+        else if (collision.gameObject.CompareTag("Water"))
+        {
+            isDoubleJump = false;
+        }
+    }
 }
