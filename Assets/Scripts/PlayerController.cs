@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -13,6 +11,7 @@ public class PlayerController : MonoBehaviour
      private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private float radiusGroundCheck;
 
     private void Start()
     {
@@ -43,7 +42,6 @@ public class PlayerController : MonoBehaviour
             isFacingRight = true;
         }
     }
-
     void Jump()
     {
         if (IsGrounded() && !Input.GetButton("Jump"))
@@ -71,7 +69,12 @@ public class PlayerController : MonoBehaviour
 
     private bool IsGrounded()
     {
-        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+        return Physics2D.OverlapCircle(groundCheck.position, radiusGroundCheck, groundLayer);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(groundCheck.position, radiusGroundCheck);
     }
 
 }
